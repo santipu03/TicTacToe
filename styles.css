@@ -1,0 +1,169 @@
+/* Roboto font */
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+/* Variables */
+:root {
+    --white: #fff;
+    --black: #000;
+}
+
+/* General styles */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+html {
+    height: 100vh;
+}
+body {
+    font-family: 'Roboto', sans-serif;
+    height: 100vh;
+    box-sizing: border-box;
+}
+
+/* Watermark */
+.marca {
+    color: #777;
+    border: 1px solid #777;
+    width: 110px;
+    height: 30px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    bottom: 20px;
+    right: 20px;
+    position: fixed;
+}
+
+/* TITLE */
+.title-container {
+    height: 15%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: end;
+}
+
+.title {
+    font-size: 36px;
+    text-align: center;
+    margin: 10px 0;
+}
+
+/* INFO */
+.info-container{
+    height: 15%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.player1-points, .player2-points {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+.points {
+    font-size: 30px;
+    font-weight: bold;
+}
+.restart-btn,
+.next-round-btn,
+.start-btn {
+    width: 180px;
+    border: 2px solid #777;
+    background-color: #ddd;
+    padding: 12px 35px;
+    border-radius: 10px;
+}
+.start-btn {
+    margin-top: 10px;
+}
+.restart-btn:hover,
+.next-round-btn:hover,
+.start-btn:hover {
+    background-color: #bbb;
+}
+
+/* GRID */
+.grid-container{
+    display: grid;
+    grid-template-columns: repeat(3, 130px);
+    grid-template-rows: repeat(3, 130px);
+    justify-content: center;
+    align-content: center;
+}
+.cell {
+    background-color: #ccc;
+    border: 2px solid #444;
+}
+.cell:hover {
+    background-color: #999;
+}
+
+
+/* MODAL */
+.modal-overlay {
+    position: fixed;
+    background-color: rgba(200, 200, 200, .7);
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: -10;
+    visibility: hidden;
+}
+.show {
+    z-index: 10;
+    visibility: visible;
+}
+.modal-container {
+    background-color: var(--white);
+    border-radius: 10px;
+    width: 450px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    padding: 25px;
+    position: relative;
+}
+.modal-title {
+    font-size: 30px;
+    font-weight: bold;
+}
+.fa-xmark {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 25px;
+}
+.fa-xmark:hover {
+    cursor: pointer;
+}
+
+/* Form inside modal */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+input {
+    height: 25px;
+    border: 1px solid var(--black);
+    border-radius: 5px;
+    padding: 10px;
+}
+.flex-input {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
