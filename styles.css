@@ -100,8 +100,15 @@ body {
 .cell {
     background-color: #ccc;
     border: 2px solid #444;
+    color: var(--black);
+    font-size: 125px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
 }
-.cell:hover {
+
+.cell:not(.X):not(.O):hover{
     background-color: #999;
 }
 
@@ -109,7 +116,7 @@ body {
 /* MODAL */
 .modal-overlay {
     position: fixed;
-    background-color: rgba(200, 200, 200, .7);
+    background-color: rgba(200, 200, 200, .9);
     height: 100%;
     width: 100%;
     top: 0;
