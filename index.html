@@ -15,14 +15,14 @@
     </div>
 
     <div class="info-container">
-        <div class="player1-points">
-            <div>Player 1:</div>
-            <div class="points">X</div>
+        <div class="player1-section">
+            <div class="player1-name">Player 1:</div>
+            <div class="marker">X</div>
         </div>
-        <button class="restart-btn ">Restart Game</button>
-        <div class="player2-points">
-            <div>Player 2:</div>
-            <div class="points">0</div>
+        <button class="restart-btn-top ">Restart Game</button>
+        <div class="player2-section">
+            <div class="player2-name">Player 2:</div>
+            <div class="marker">0</div>
         </div>
     </div>
 
@@ -30,13 +30,11 @@
 
     </article>
 
-    <div class="modal-overlay">
+    <div class="modal-overlay" id="end-modal">
         <div class="modal-container">
-            <i class="fa-solid fa-xmark"></i>
-            <div class="modal-title">Player 1 wins!</div>
-            <div class="modal-message">Next time try drinking redbull before playing</div>
-            <button class="next-round-btn">Next Round</button>
-            <button class="restart-btn">Restart Game</button>
+            <div class="end-modal-title"></div>
+            <div class="modal-message"></div>
+            <button class="restart-btn-end">Restart Game</button>
         </div>
     </div>
     <div class="modal-overlay show" id="start-modal">
@@ -45,12 +43,12 @@
             <div class="modal-message">Choose the name of your characters</div>
             <form action="" method="post" autocomplete="off">
                 <div class="flex-input">
-                    <label for="player1">Player 1</label>
-                    <input type="text" id="player1">
+                    <label for="player1-name-input">Player 1</label>
+                    <input type="text" id="player1-name-input">
                 </div>
                 <div class="flex-input">
-                    <label for="player2">Player 2</label>
-                    <input type="text" id="player2">
+                    <label for="player2-name-input">Player 2</label>
+                    <input type="text" id="player2-name-input">
                 </div>
             </form>
             <button class="start-btn">Start Game</button>
