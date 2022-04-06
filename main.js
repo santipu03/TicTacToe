@@ -2,6 +2,9 @@
 // To-DO list
 // - underscore in all private functions inside modules (_)
 // - verify input names of the players
+// - vars of colors CSS
+// - ReadMe explaining modules
+// - Make turn random
 
 
 
@@ -11,7 +14,7 @@ const factoryPlayers = (name) => {
 }
 
 const gameBoard = (() => {
-    const movesArray = ["","","","","","","","",""];
+    let movesArray = ["","","","","","","","",""];
     let player1;
     let player2;
 
@@ -23,17 +26,29 @@ const gameBoard = (() => {
             let cell = document.createElement("div");
             cell.classList.add("cell");
             cell.classList.add(i);
-            cell.textContent = movesArray[i];
             gridContainer.appendChild(cell);
         }
 
         const main = document.querySelector(".gameboard");
         main.appendChild(gridContainer);
         _setCellEventListeners();
-        // _setRestartBtnEventListener();
+        _setRestartTopBtnEventListener();
+    }
+
+    const clearGrid = () => {
+        const grid = document.querySelector(".grid-container");
+        grid.remove();
+    }
+
+    const _verifyNamePlayers = () => {
+        let player1Name = document.getElementById("player1-name-input").value.toUpperCase();
+        let player2Name = document.getElementById("player2-name-input").value.toUpperCase();
+        // regex to check only letters and numbers, no more than (...) chars and no less than 2 chars
+        return true
     }
 
     const renderNamePlayers = () => {
+        if (_verifyNamePlayers())
         document.querySelector(".player1-name").textContent = document.getElementById("player1-name-input").value.toUpperCase();
         document.querySelector(".player2-name").textContent = document.getElementById("player2-name-input").value.toUpperCase();
     }
@@ -52,38 +67,42 @@ const gameBoard = (() => {
     }
 
     const setPlayers = () => {
-        player1 = gameBoard.createPlayers(document.querySelector(".player1-name").textContent);
-        player2 = gameBoard.createPlayers(document.querySelector(".player2-name").textContent);
+        player1 = createPlayers(document.querySelector(".player1-name").textContent);
+        player2 = createPlayers(document.querySelector(".player2-name").textContent);
     }
 
     const getPlayers = (xturn) => {
         return (xturn) ? player1 : player2;
     }
 
+    const clearPlayerMoves = () => {
+        player1.moves = [];
+        player2.moves = [];
+    }
 
+    const _setRestartTopBtnEventListener = () => {
+        const restartBtn = document.querySelector(".restart-btn-top");
+        restartBtn.addEventListener("click", gameFlow.restartGame)
+    }
 
-    // const _setRestartBtnEventListener = () => {
-    //     const restartBtn = document.querySelector(".restart-btn");
-    //     restartBtn.addEventListener("click", restartGame)
-    // }
-
-    return {movesArray,renderGrid,renderNamePlayers,createPlayers,setPlayers,getPlayers}
+    return {movesArray,renderGrid,renderNamePlayers,createPlayers,setPlayers,getPlayers,clearGrid,clearPlayerMoves}
 })();
 
 
 const displayModal = (() => {
 
     const _renderGame = () => {
-        _hideModal();
+        _hideModal("start-modal");
         gameBoard.renderGrid();
+        
         gameBoard.renderNamePlayers();
-
-        gameBoard._setPlayers();
+        gameBoard.setPlayers();
+        
         
     }
 
-    const _hideModal = () => {
-        const modal = document.getElementById("start-modal")
+    const _hideModal = (type) => {
+        const modal = document.getElementById(type)
         modal.classList.remove("show");
     }
 
@@ -101,13 +120,18 @@ const displayModal = (() => {
             modalTitle.textContent = "IT'S A TIEEE";
             modalMessage.textContent = "I know you can play better than this"
         }
-        _setRestartBtnEventListener();  
+        _setRestartModalBtnEventListener();  
+    }
+
+    const _restartGameFromModal = () => {
+        _hideModal("end-modal");
+        gameFlow.restartGame();
     }
 
     // Event listener to the restart button of the endModal
-    const _setRestartBtnEventListener = () => {
+    const _setRestartModalBtnEventListener = () => {
         const restartBtn = document.querySelector(".restart-btn-end");
-        restartBtn.addEventListener("click", restartGame)
+        restartBtn.addEventListener("click", _restartGameFromModal)
     }
 
     // Event listener to render the gameboard when click the start button
@@ -122,6 +146,7 @@ const displayModal = (() => {
 
 const gameFlow = (() => {
 
+    // set xTurn to random
     let xTurn = true;
     const winCombos = [
         [0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]
@@ -142,6 +167,7 @@ const gameFlow = (() => {
                 displayModal.endModal(false,xTurn);
             } else {
                 _changeTurn();
+                _indicateTurn();
             }
         }
     }
@@ -152,6 +178,18 @@ const gameFlow = (() => {
         let numCell = parseInt(e.currentTarget.classList[1]);
         (xTurn) ? marker = "X" : marker = "O";
         gameBoard.movesArray[numCell] = marker;
+    }
+
+    const _indicateTurn = () => {
+        const turnMessage = document.querySelector(".turn");
+        const arrowDiv = document.querySelector(".icon");
+        let icon = document.createElement("i");
+        icon.classList.add("fa-solid");
+        (xTurn) ? icon.classList.add("fa-arrow-left-long") : icon.classList.add("fa-arrow-right-long");
+        arrowDiv.firstChild.remove()
+        arrowDiv.appendChild(icon);
+        let player = gameBoard.getPlayers(xTurn).name;
+        turnMessage.textContent = `is ${player} turn`;
     }
 
     const _addPlayerMoves  = (e) => {
@@ -198,17 +236,13 @@ const gameFlow = (() => {
     }
 
     const restartGame = () => {
-
-        // restart the movesArray and 
-        
+        gameBoard.movesArray = ["","","","","","","","",""];
+        gameBoard.clearGrid();
+        gameBoard.renderGrid();
+        gameBoard.clearPlayerMoves();
+        xTurn = true; 
+        _indicateTurn();
     }
-
-    const _setModalEventListener = () => {
-
-    }
-
-    // add number class of cell to playerMoves to later check in winCombos 
-
 
     return {handleClick,restartGame}
 })();
