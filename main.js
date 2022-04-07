@@ -1,7 +1,5 @@
 
 // To-DO list
-// - underscore in all private functions inside modules (_)
-// - verify input names of the players
 // - vars of colors CSS
 // - ReadMe explaining modules
 // - Make turn random
@@ -17,6 +15,16 @@ const gameBoard = (() => {
     let movesArray = ["","","","","","","","",""];
     let player1;
     let player2;
+
+    const renderGame = () => {
+        if (_verifyNamePlayers()){
+            modal.hide("start-modal");
+            _renderNamePlayers();
+            _setPlayers();
+            renderGrid();
+            gameFlow.indicateTurn();
+        }
+    }
 
     const renderGrid = () => {
         let gridContainer = document.createElement("div");
@@ -41,16 +49,37 @@ const gameBoard = (() => {
     }
 
     const _verifyNamePlayers = () => {
-        let player1Name = document.getElementById("player1-name-input").value.toUpperCase();
-        let player2Name = document.getElementById("player2-name-input").value.toUpperCase();
-        // regex to check only letters and numbers, no more than (...) chars and no less than 2 chars
+        let player1Name = document.getElementById("player1-name-input").value;
+        let player2Name = document.getElementById("player2-name-input").value;
+        let messageNamePlayer1 = document.querySelector(".message-error-input1");
+        let messageNamePlayer2 = document.querySelector(".message-error-input2");
+        let regex = /[^A-Za-z0-9]+/;
+
+
+        if (player1Name.length <= 1 || player1Name.length >= 15) {
+            return _displayErrorMessageInput(messageNamePlayer1,true);
+        } else if (player2Name.length <= 1 || player2Name.length >= 15) {
+            messageNamePlayer1.innerHTML = "&nbsp;";
+            return _displayErrorMessageInput(messageNamePlayer2,true);
+        } else if (regex.test(player1Name)) {
+            console.log("true")
+            messageNamePlayer2.innerHTML = "&nbsp;";
+            return _displayErrorMessageInput(messageNamePlayer1,false);
+        } else if (regex.test(player2Name)) {
+            messageNamePlayer1.innerHTML = "&nbsp;";
+            return _displayErrorMessageInput(messageNamePlayer2,false);
+        }
         return true
     }
 
-    const renderNamePlayers = () => {
-        if (_verifyNamePlayers())
-        document.querySelector(".player1-name").textContent = document.getElementById("player1-name-input").value.toUpperCase();
-        document.querySelector(".player2-name").textContent = document.getElementById("player2-name-input").value.toUpperCase();
+    const _displayErrorMessageInput = (message,type) => {
+        (type) ? message.textContent = "*length between 2 and 15 letters" : message.textContent = "*only letters and numbers";
+        return false;
+    }
+
+    const _renderNamePlayers = () => {
+            document.querySelector(".player1-name").textContent = document.getElementById("player1-name-input").value.toUpperCase();
+            document.querySelector(".player2-name").textContent = document.getElementById("player2-name-input").value.toUpperCase(); 
     }
 
     const createPlayers = (name) => {
@@ -66,7 +95,7 @@ const gameBoard = (() => {
         })
     }
 
-    const setPlayers = () => {
+    const _setPlayers = () => {
         player1 = createPlayers(document.querySelector(".player1-name").textContent);
         player2 = createPlayers(document.querySelector(".player2-name").textContent);
     }
@@ -85,28 +114,20 @@ const gameBoard = (() => {
         restartBtn.addEventListener("click", gameFlow.restartGame)
     }
 
-    return {movesArray,renderGrid,renderNamePlayers,createPlayers,setPlayers,getPlayers,clearGrid,clearPlayerMoves}
+    return {movesArray,renderGrid,createPlayers,getPlayers,clearGrid,clearPlayerMoves,renderGame}
 })();
 
 
-const displayModal = (() => {
+const modal = (() => {
 
-    const _renderGame = () => {
-        _hideModal("start-modal");
-        gameBoard.renderGrid();
-        
-        gameBoard.renderNamePlayers();
-        gameBoard.setPlayers();
-        
-        
-    }
-
-    const _hideModal = (type) => {
+    // hide the modal displayed in that moment
+    const hide = (type) => {
         const modal = document.getElementById(type)
         modal.classList.remove("show");
     }
 
-    const endModal = (result,xturn) => {
+    // create and display the end modal with different message depending of who has won, and set listener to the restart btn
+    const displayEndModal = (result,xturn) => {
         const endModal = document.getElementById("end-modal");
         const modalTitle = document.querySelector(".end-modal-title");
         const modalMessage = document.querySelector(".modal-message");
@@ -123,8 +144,9 @@ const displayModal = (() => {
         _setRestartModalBtnEventListener();  
     }
 
+    // Hide the end modal and restart the game
     const _restartGameFromModal = () => {
-        _hideModal("end-modal");
+        hide("end-modal");
         gameFlow.restartGame();
     }
 
@@ -135,10 +157,9 @@ const displayModal = (() => {
     }
 
     // Event listener to render the gameboard when click the start button
-    const startButton = document.querySelector(".start-btn");
-    startButton.addEventListener("click", _renderGame)
+    document.querySelector(".start-btn").addEventListener("click", gameBoard.renderGame)
 
-    return {endModal}
+    return {displayEndModal,hide}
 
 })();
 
@@ -161,13 +182,13 @@ const gameFlow = (() => {
             _addToGameBoardArray(e);
             _addPlayerMoves(e);
             if (_checkWin()){
-                displayModal.endModal(true,xTurn);
+                modal.displayEndModal(true,xTurn);
                 
             } else if (_checkDraw()){
-                displayModal.endModal(false,xTurn);
+                modal.displayEndModal(false,xTurn);
             } else {
                 _changeTurn();
-                _indicateTurn();
+                indicateTurn();
             }
         }
     }
@@ -180,7 +201,7 @@ const gameFlow = (() => {
         gameBoard.movesArray[numCell] = marker;
     }
 
-    const _indicateTurn = () => {
+    const indicateTurn = () => {
         const turnMessage = document.querySelector(".turn");
         const arrowDiv = document.querySelector(".icon");
         let icon = document.createElement("i");
@@ -241,9 +262,9 @@ const gameFlow = (() => {
         gameBoard.renderGrid();
         gameBoard.clearPlayerMoves();
         xTurn = true; 
-        _indicateTurn();
+        indicateTurn();
     }
 
-    return {handleClick,restartGame}
+    return {handleClick,restartGame,indicateTurn}
 })();
 
