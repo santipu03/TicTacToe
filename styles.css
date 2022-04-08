@@ -5,6 +5,13 @@
 :root {
     --white: #fff;
     --black: #000;
+    --dark-grey: #444;
+    --medium-grey: #bbb;
+    --light-grey: #ddd;
+    --modal-overlay: rgba(200, 200, 200, .9);
+    --red: #f00;
+    --dark-green: #166534;
+    --light-green: #bbf7d0;
 }
 
 /* General styles */
@@ -25,8 +32,8 @@ body {
 
 /* Watermark */
 .marca {
-    color: #777;
-    border: 1px solid #777;
+    color: var(--dark-grey);
+    border: 1px solid var(--dark-grey);
     width: 110px;
     height: 30px;
     border-radius: 5px;
@@ -45,7 +52,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: #166534;
+    background-color: var(--dark-green);
     color: var(--white);
 }
 
@@ -69,7 +76,7 @@ body {
     justify-content: center;
     gap: 10px;
     font-weight: bold;
-    background-color: #bbf7d0;
+    background-color: var(--light-green);
     height: 100px;
     width: 250px;
     border-radius: 10px;
@@ -82,8 +89,8 @@ body {
 .restart-btn-end,
 .start-btn {
     width: 180px;
-    border: 2px solid #777;
-    background-color: #ddd;
+    border: 2px solid var(--dark-grey);
+    background-color: var(--light-grey);
     padding: 12px 35px;
     border-radius: 10px;
 }
@@ -93,7 +100,7 @@ body {
 .restart-btn-top:hover,
 .restart-btn-end:hover,
 .start-btn:hover {
-    background-color: #bbb;
+    background-color: var(--medium-grey);
 }
 
 .info-center {
@@ -108,7 +115,7 @@ body {
 }
 .fa-solid {
     font-size: 30px;
-    color: #166534;
+    color: var(--dark-green);
 }
 
 /* GRID */
@@ -120,8 +127,8 @@ body {
     align-content: center;
 }
 .cell {
-    background-color: #ccc;
-    border: 2px solid #444;
+    background-color: var(--light-grey);
+    border: 2px solid var(--dark-grey);
     color: var(--black);
     font-size: 80px;
     display: flex;
@@ -131,14 +138,14 @@ body {
 }
 
 .cell:not(.X):not(.O):hover{
-    background-color: #999;
+    background-color: var(--medium-grey);
 }
 
 
 /* MODAL */
 .modal-overlay {
     position: fixed;
-    background-color: rgba(200, 200, 200, .9);
+    background-color: var(--modal-overlay);
     height: 100%;
     width: 100%;
     top: 0;
@@ -169,6 +176,11 @@ body {
     font-size: 30px;
     font-weight: bold;
 }
+.end-modal-message {
+    text-align: center;
+    padding: 15px;
+    font-style: italic;
+}
 
 /* Form inside modal */
 form {
@@ -191,5 +203,5 @@ input {
 .message-error-input1,
 .message-error-input2 {
     font-size: 12px;
-    color: red;
+    color: var(--red);
 }
