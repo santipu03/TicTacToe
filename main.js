@@ -1,12 +1,9 @@
 
-// To-DO list
-// - ReadMe explaining modules
-
-
 // PLAYER FACTORY
 const factoryPlayers = (name) => {
     return {name}
 }
+
 
 // GAME BOARD MODULE
 const gameBoard = (() => {
@@ -129,7 +126,6 @@ const modal = (() => {
     let modalMessage = document.querySelector(".end-modal-message");
 
 
-
     // Event listeners
     const _setRestartModalBtnEventListener = () => {
         restartBtn.addEventListener("click", _restartGameFromModal)
@@ -207,6 +203,7 @@ const gameFlow = (() => {
         if (_verifyMove(numCell)) {
             _markCell(e);
             _addToGameBoardArray(e);
+
             if (_checkWin()){
                 modal.displayEndModal(true,xTurn);
             } else if (_checkDraw()){
